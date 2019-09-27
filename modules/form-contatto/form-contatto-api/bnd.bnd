@@ -1,0 +1,10 @@
+Bundle-Name: form-contatto-api
+Bundle-SymbolicName: com.liferay.docs.formcontatto.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.docs.formcontatto.exception,\
+	com.liferay.docs.formcontatto.model,\
+	com.liferay.docs.formcontatto.service,\
+	com.liferay.docs.formcontatto.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../form-contatto-service/service.xml

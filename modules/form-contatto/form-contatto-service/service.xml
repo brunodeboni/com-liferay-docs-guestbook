@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder auto-namespace-tables="true" package-path="com.liferay.docs.formcontatto">
+    <author>Bruno De Boni</author>
+    <namespace>FC</namespace>
+    
+    <entity name="FormContatto" local-service="true" uuid="true">
+
+		<!-- PK fields -->
+		<column name="formContattoId" primary="true" type="long" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Status fields -->
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		
+		<!-- Other fields -->
+		<column name="name" type="String" />
+
+		<!-- Finder methods -->
+		<finder name="GroupId" return-type="Collection">
+	        <finder-column name="groupId" />
+	    </finder>
+	</entity>
+	
+	<entity name="Contatto" local-service="true" uuid="true">
+
+		<!-- PK fields -->
+		<column name="contattoId" primary="true" type="long" />
+		
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Status fields -->
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		
+		<!-- Other fields -->
+		<column name="nome" type="String" />
+		<column name="cognome" type="String" />
+		<column name="email" type="String" />
+		<column name="formContattoId" type="long" />
+		
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="nome" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="G_FC" return-type="Collection">
+	        <finder-column name="groupId" />
+	        <finder-column name="formContattoId" />
+	    </finder>
+	</entity>
+	
+	<exceptions>
+	    <exception>ContattoEmail</exception>
+	    <exception>ContattoCognome</exception>
+	    <exception>ContattoNome</exception>
+	    <exception>FormContattoName</exception>
+	</exceptions>
+</service-builder>
