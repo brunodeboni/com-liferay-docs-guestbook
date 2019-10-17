@@ -52,9 +52,9 @@ import com.liferay.portal.kernel.util.Validator;
 public class ContattoLocalServiceImpl extends ContattoLocalServiceBaseImpl {
 
 	public Contatto addContatto(
-	    long userId, long formContattoId, String nome, String cognome, String email, 
-	    ServiceContext serviceContext)
-	    throws PortalException {
+		    long userId, long formContattoId, String nome, String cognome, String email, 
+		    ServiceContext serviceContext)
+		    throws PortalException {
 
 	    long groupId = serviceContext.getScopeGroupId();
 
@@ -82,14 +82,14 @@ public class ContattoLocalServiceImpl extends ContattoLocalServiceBaseImpl {
 	    contatto.setEmail(email);
 
 	    contattoPersistence.update(contatto);
-
+	    
 	    return contatto;
 	}
 	
 	public Contatto updateContatto (
-	    long userId, long formContattoId, long contattoId, String nome, String cognome, String email,
-	    ServiceContext serviceContext)
-	    throws PortalException, SystemException {
+		    long userId, long formContattoId, long contattoId, String nome, String cognome, String email,
+		    ServiceContext serviceContext)
+		    throws PortalException, SystemException {
 
 	    Date now = new Date();
 
@@ -108,7 +108,8 @@ public class ContattoLocalServiceImpl extends ContattoLocalServiceBaseImpl {
 	    contatto.setExpandoBridgeAttributes(serviceContext);
 
 	    contattoPersistence.update(contatto);
-
+	    
+	    //serviceContext.getModelPermissions()
 	    return contatto;
 	}
 	
@@ -118,7 +119,7 @@ public class ContattoLocalServiceImpl extends ContattoLocalServiceBaseImpl {
 		Contatto contatto = getContatto(contattoId);
 
 		contatto = deleteContatto(contattoId);
-
+		
 	    return contatto;
 	}
 	

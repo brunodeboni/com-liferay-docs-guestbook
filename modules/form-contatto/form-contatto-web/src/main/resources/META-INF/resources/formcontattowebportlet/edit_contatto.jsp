@@ -1,7 +1,6 @@
 <%@ include file="../init.jsp" %>
 
-<% 
-
+<%
 long contattoId = ParamUtil.getLong(renderRequest, "contattoId");
 
 Contatto contatto = null;
@@ -10,18 +9,24 @@ if (contattoId > 0) {
 }
 
 long formContattoId = ParamUtil.getLong(renderRequest, "formContattoId");
-
 %>
 
 <portlet:renderURL var="viewURL">
     <portlet:param name="mvcPath" value="/formcontattowebportlet/view.jsp"></portlet:param>
 </portlet:renderURL>
 
-<portlet:actionURL name="addContatto" var="addContattoURL"></portlet:actionURL>
+	<portlet:actionURL name="addContatto" var="editContattoURL"></portlet:actionURL>
 
-<aui:form action="<%= addContattoURL %>" name="<portlet:namespace />fm">
-	<aui:fieldset>
+<aui:form action="<%= editContattoURL.toString() %>" name="<portlet:namespace />fm">
 	
+	<aui:model-context bean="<%= contatto %>" model="<%= Contatto.class %>" />
+	
+	<aui:input type="hidden" name="contattoId"
+            value='<%= contatto == null ? "" : contatto.getContattoId() %>' />
+	<aui:input type="hidden" name="formContattoId"
+        	value='<%= contatto == null ? formContattoId : contatto.getFormContattoId() %>'/>
+        	
+	<aui:fieldset>
 	    <aui:input label="Nome" name="nome" required="true">
 	    	<aui:validator name="required" 
 			errorMessage="Inserisci il nome." ></aui:validator>
@@ -39,15 +44,12 @@ long formContattoId = ParamUtil.getLong(renderRequest, "formContattoId");
 			errorMessage="Inserisci un indirizzo email valido." ></aui:validator>
 		</aui:input>
 		
-	   <aui:input label="Accetto le Condizioni d'uso e Privacy" name="accettazionePrivacy" 
-	    	type="checkbox" required="true">
-	    	<aui:validator name="required" 
-			errorMessage="È necessario il consenso all'informativa Privacy." ></aui:validator>
-	    </aui:input>
-	    
-	    <aui:input name="contattoId" type="hidden" />
-        <aui:input name="formContattoId" type="hidden" 
-        	value='<%= contatto == null ? formContattoId : contatto.getFormContattoId() %>'/>
+		<% if(contatto == null) { %>
+			<aui:input label="Accetto le Condizioni d'uso e Privacy" name="accettazionePrivacy" type="checkbox" required="true">
+			    	<aui:validator name="required" 
+					errorMessage="È necessario il consenso all'informativa Privacy." ></aui:validator>
+			</aui:input>
+		<% } %>
 	</aui:fieldset>
 	
 	<aui:button-row>

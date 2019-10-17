@@ -14,6 +14,9 @@
 
 package com.liferay.docs.formcontatto.service;
 
+import com.liferay.docs.formcontatto.model.FormContatto;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -418,5 +421,18 @@ public class FormContattoLocalServiceWrapper
 	}
 
 	private FormContattoLocalService _formContattoLocalService;
+
+	@Override
+	public FormContatto deleteFormContatto(long formContattoId, ServiceContext serviceContext) throws PortalException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FormContatto updateFormContatto(long userId, long formContattoId, String name, ServiceContext serviceContext)
+			throws PortalException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

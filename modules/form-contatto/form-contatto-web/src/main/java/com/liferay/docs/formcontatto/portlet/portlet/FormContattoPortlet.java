@@ -15,9 +15,9 @@ import javax.portlet.RenderResponse;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import com.liferay.docs.formcontatto.constants.FormContattoPortletKeys;
 import com.liferay.docs.formcontatto.model.Contatto;
 import com.liferay.docs.formcontatto.model.FormContatto;
-import com.liferay.docs.formcontatto.portlet.constants.FormContattoPortletKeys;
 import com.liferay.docs.formcontatto.service.ContattoLocalService;
 import com.liferay.docs.formcontatto.service.FormContattoLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -71,10 +71,11 @@ public class FormContattoPortlet extends MVCPortlet {
 	
 	            response.getRenderParameters().setValue(
 	                "formContattoId", Long.toString(formContattoId));
-	
+	            
+	            SessionMessages.add(request, "contattoUpdated");
 	        }
         	catch (Exception e) {
-	            System.out.println(e);
+        		SessionErrors.add(request, e.getClass().getName());
 	
 	            PortalUtil.copyRequestParameters(request, response);
 	
@@ -89,10 +90,10 @@ public class FormContattoPortlet extends MVCPortlet {
 	                serviceContext.getUserId(), formContattoId, contattoNome, contattoCognome, 
 	                contattoEmail, serviceContext);
 	
-	            SessionMessages.add(request, "contattoAdded");
-	
 	            response.getRenderParameters().setValue(
 	                "formContattoId", Long.toString(formContattoId));
+	            
+	            SessionMessages.add(request, "contattoAdded");
 	
 	        }
 	        catch (Exception e) {
@@ -114,18 +115,22 @@ public class FormContattoPortlet extends MVCPortlet {
 
         ServiceContext serviceContext = ServiceContextFactory.getInstance(
             Contatto.class.getName(), request);
-
+        
         try {
 
             response.getRenderParameters().setValue(
                 "formContattoId", Long.toString(formContattoId));
 
-            /*_contattoLocalService.deleteContatto(contattoId, serviceContext);*/
+            _contattoLocalService.deleteContatto(contattoId, serviceContext);
+            
+            SessionMessages.add(request, "contattoDeleted");
         }
 
         catch (Exception e) {
             Logger.getLogger(FormContattoPortlet.class.getName()).log(
                 Level.SEVERE, null, e);
+            
+            SessionErrors.add(request, e.getClass().getName());
         }
 	}
 	
@@ -139,11 +144,12 @@ public class FormContattoPortlet extends MVCPortlet {
             long groupId = serviceContext.getScopeGroupId();
 
             long formContattoId = ParamUtil.getLong(renderRequest, "formContattoId");
-
+            
             List<FormContatto> formsContatto = _formContattoLocalService.getFormsContatto(
                 groupId);
-
+            
             if (formsContatto.isEmpty()) {
+            	
             	FormContatto formContatto = _formContattoLocalService.addFormContatto(
                     serviceContext.getUserId(), "Main", serviceContext);
 

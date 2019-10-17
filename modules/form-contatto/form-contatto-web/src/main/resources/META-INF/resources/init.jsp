@@ -23,6 +23,8 @@
 <%@ page import="com.liferay.docs.formcontatto.service.FormContattoLocalServiceUtil" %>
 <%@ page import="com.liferay.docs.formcontatto.model.Contatto" %>
 
+
+
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />

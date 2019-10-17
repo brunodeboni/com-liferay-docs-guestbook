@@ -94,7 +94,7 @@ public interface FormContattoLocalService
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	public FormContatto deleteFormContatto(FormContatto formContatto);
-
+	
 	/**
 	 * Deletes the form contatto with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
@@ -105,7 +105,10 @@ public interface FormContattoLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public FormContatto deleteFormContatto(long formContattoId)
 		throws PortalException;
-
+	
+	public FormContatto deleteFormContatto(
+			long formContattoId, ServiceContext serviceContext)
+		throws PortalException;
 	/**
 	 * @throws PortalException
 	 */
@@ -309,5 +312,9 @@ public interface FormContattoLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public FormContatto updateFormContatto(FormContatto formContatto);
+	
+	public FormContatto updateFormContatto(
+			long userId, long formContattoId, String name, ServiceContext serviceContext)
+		throws PortalException;
 
 }

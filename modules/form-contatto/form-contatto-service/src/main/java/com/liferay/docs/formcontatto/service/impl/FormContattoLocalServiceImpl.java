@@ -18,12 +18,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import com.liferay.docs.formcontatto.exception.FormContattoNameException;
+import com.liferay.docs.formcontatto.model.Contatto;
 import com.liferay.docs.formcontatto.model.FormContatto;
+import com.liferay.docs.formcontatto.service.ContattoLocalService;
 import com.liferay.docs.formcontatto.service.base.FormContattoLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -46,12 +50,11 @@ import com.liferay.portal.kernel.util.Validator;
 	property = "model.class.name=com.liferay.docs.formcontatto.model.FormContatto",
 	service = AopService.class
 )
-public class FormContattoLocalServiceImpl
-	extends FormContattoLocalServiceBaseImpl {
+public class FormContattoLocalServiceImpl extends FormContattoLocalServiceBaseImpl {
 
 	public FormContatto addFormContatto(
-	    long userId, String name, ServiceContext serviceContext)
-	    throws PortalException {
+		    long userId, String name, ServiceContext serviceContext)
+		    throws PortalException {
 
 	    long groupId = serviceContext.getScopeGroupId();
 
@@ -76,9 +79,56 @@ public class FormContattoLocalServiceImpl
 	    formContatto.setExpandoBridgeAttributes(serviceContext);
 
 	    formContattoPersistence.update(formContatto);
-
+	    
 	    return formContatto;
 
+	}
+
+	public FormContatto updateFormContatto(long userId, long formContattoId,
+		    String name, ServiceContext serviceContext) throws PortalException,
+			SystemException {
+
+        Date now = new Date();
+
+        validate(name);
+
+        FormContatto formContatto = getFormContatto(formContattoId);
+
+        User user = userLocalService.getUser(userId);
+
+        formContatto.setUserId(userId);
+        formContatto.setUserName(user.getFullName());
+        formContatto.setModifiedDate(serviceContext.getModifiedDate(now));
+        formContatto.setName(name);
+        formContatto.setExpandoBridgeAttributes(serviceContext);
+
+        formContattoPersistence.update(formContatto);
+        
+        return formContatto;
+	}
+	
+	public FormContatto deleteFormContatto(long formContattoId, ServiceContext serviceContext) 
+            		throws PortalException, SystemException {
+
+		FormContatto formContatto = getFormContatto(formContattoId);
+	
+		List<Contatto> contatti = _contattoLocalService.getContatti(
+	                    serviceContext.getScopeGroupId(), formContattoId);
+	
+	    for (Contatto contatto : contatti) {
+	            _contattoLocalService.deleteContatto(contatto.getContattoId());
+	    }
+	
+	    formContatto = deleteFormContatto(formContatto);
+	    
+	    return formContatto;
+	}
+	
+	private ContattoLocalService _contattoLocalService;
+
+	@Reference(unbind = "-")
+	protected void setContattoService(ContattoLocalService contattoLocalService) {
+	    _contattoLocalService = contattoLocalService;
 	}
 	
 	public List<FormContatto> getFormsContatto(long groupId) {
@@ -107,4 +157,6 @@ public class FormContattoLocalServiceImpl
 	        throw new FormContattoNameException();
 	    }
 	}
+	
+	
 }
